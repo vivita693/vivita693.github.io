@@ -1,0 +1,1130 @@
+<html>
+
+<head>
+  <title>Video Playlist</title>
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/videojs-mobile-ui/dist/videojs-mobile-ui.css" rel="stylesheet" />
+  <link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&family=Noto+Sans+Khmer&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      /* Remove default margin */
+    }
+
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .top-overlay {
+      position: absolute;
+      background-color: transparent;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+    }
+
+    .bottom-overlay {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+    }
+    .video-container {
+      height: 100vh;
+	  position: relative;
+    }
+
+    /* .top-banner {
+      flex: 10;
+    } */
+
+    .video-player {
+      flex: 80;
+    }
+
+    .top-overlay img {
+      display: block;
+      max-height: 10vh;
+      width: auto;
+      height: auto;
+    }
+
+    .bottom-overlay img {
+      /*float: left;
+      max-height: 10vh;
+      width: auto;
+      height: auto;*/
+
+	  float: left;
+	  max-height: 10vh;
+      width: 200;
+      height: 100;
+
+    }
+
+    .top-container {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: stretch;
+    }
+
+    
+    .gif-left {
+      flex-grow: 1;
+
+    }
+
+	
+    .gif-right {
+      flex-grow: 0;
+
+    }
+
+    .gif-left img {
+		margin-left: 10%;
+    }
+
+    .gif-right img {
+      
+	 /* margin-right: auto;*/
+	 margin-right: 30px;
+
+    }
+
+    .long-ads {
+      flex-grow: 8;
+    }
+
+   .long-ads img {
+     margin-left: auto;
+	 margin-right: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    .marquee {
+      overflow: hidden;
+      font-family: 'Kantumruy Pro', sans-serif;
+      font-weight: 700;
+      font-size: 40px;
+      font-size: 1.5vw;
+      text-transform: uppercase;
+      background-color: #2600ff;
+      min-height: 10vh; 
+	 /*min-height: 5px; */
+      vertical-align: middle;
+    }
+
+    .marquee__inner {
+      display: flex;
+    }
+
+    .marquee__line {
+      display: flex;
+      margin: 0;
+
+      padding: 3px;
+      min-width: 100%;
+      white-space: nowrap;
+      /* animation properties */
+      -moz-transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      transform: translateX(100%);
+
+      animation-name: my-animation;
+      animation-duration: 23s;
+      /* animation-timing-function: ease-in-out; */
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes marqueeLine {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* for Firefox */
+    @-moz-keyframes my-animation {
+      from {
+        -moz-transform: translateX(100%);
+      }
+
+      to {
+        -moz-transform: translateX(-100%);
+      }
+    }
+
+    /* for Chrome */
+    @-webkit-keyframes my-animation {
+      from {
+        -webkit-transform: translateX(100%);
+      }
+
+      to {
+        -webkit-transform: translateX(-100%);
+      }
+    }
+
+    @keyframes my-animation {
+      from {
+        -moz-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+      }
+
+      to {
+        -moz-transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+      }
+    }
+	.video-container button {
+		background: none;
+		border: none;
+		color: white;
+		display: inline-block;
+		font-size: inherit;
+		line-height: inherit;
+		text-transform: none;
+		text-decoration: none;
+		transition: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+
+	.vjs-big-pause-button .vjs-icon-placeholder:before {
+    	content: "\f103";
+	}
+	.vjs-big-pause-button .vjs-icon-placeholder:before {
+		font-family: VideoJS;
+		font-weight: normal;
+		font-style: normal;
+	}
+	.vjs-button > .vjs-icon-placeholder-on-pause:before, .video-js .vjs-big-play-button .vjs-icon-placeholder-on-pause:before {
+    text-align: center;
+	}
+	.vjs-big-pause-button .vjs-icon-placeholder:before {
+		font-family: VideoJS;
+		font-weight: normal;
+		font-style: normal;
+	}
+	/* .video-button:before {
+		content: "\f103";
+	}
+	.video-button */
+	.video-container .vjs-big-pause-button {
+		/* font-size: 1.8335em; */
+		font-size: 3em;
+		line-height: 1.5em;
+		height: 1.63332em;
+		width: 3em;
+		display: block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		padding: 0;
+		margin-top: -0.81666em;
+		margin-left: -1.5em;
+		cursor: pointer;
+		opacity: 1;
+		border: 0.06666em solid #fff;
+		background-color: #2B333F;
+		background-color: rgba(43, 51, 63, 0.7);
+		border-radius: 0.3em;
+		transition: all 0.4s;
+		z-index: 999;
+	}
+
+	.video-container:hover .vjs-big-pause-button,
+	.video-container .vjs-big-pause-button:focus {
+		border-color: #fff;
+		background-color: #73859f;
+		background-color: rgba(115, 133, 159, 0.5);
+		transition: all 0s;
+	}
+
+	.vjs-big-pause-button.no-display {
+		display: none;
+	}
+
+
+
+	/* #video-play {
+		background-color: rgb(235, 42, 28);
+	} */
+	/* .vjs-has-started.vjs-touch.vjs-show-big-play-button .vjs-big-play-button {
+		display: block;
+		visibility: visible;
+    	opacity: 1;
+    	transition: visibility 0.5s, opacity 0.5s;
+	} */
+	/* .video-js .vjs-big-play-button {
+    font-size: 3em;
+    line-height: 1.5em;
+    height: 1.63332em;
+    width: 3em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 0;
+    margin-top: -0.81666em;
+    margin-left: -1.5em;
+    cursor: pointer;
+    opacity: 1;
+    border: 0.06666em solid #fff;
+    background-color: #2B333F;
+    background-color: rgba(43, 51, 63, 0.7);
+    border-radius: 0.3em;
+    transition: all 0.4s;
+  }
+  .vjs-big-play-button .vjs-svg-icon {
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    line-height: 1;
+    transform: translate(-50%, -50%);
+  }
+  
+  .video-js:hover .vjs-big-play-button,
+  .video-js .vjs-big-play-button:focus {
+    border-color: #fff;
+    background-color: #73859f;
+    background-color: rgba(115, 133, 159, 0.5);
+    transition: all 0s;
+  }
+  
+  .vjs-controls-disabled .vjs-big-play-button,
+  .vjs-has-started .vjs-big-play-button,
+  .vjs-using-native-controls .vjs-big-play-button,
+  .vjs-error .vjs-big-play-button {
+    display: none;
+  } 
+  
+  .vjs-has-started.vjs-paused.vjs-show-big-play-button:not(.vjs-seeking, .vjs-scrubbing, .vjs-error) .vjs-big-play-button {
+    display: block;
+	visibility: visible;
+    opacity: 0;
+    pointer-events: none;
+    transition: visibility 1s, opacity 1s;
+  }*/
+
+  /* .vjs-user-inactive.vjs-playing .vjs-big-play-button {
+    visibility: visible;
+    opacity: 0;
+    pointer-events: none;
+    transition: visibility 1s, opacity 1s;
+  } */
+  </style>
+</head>
+
+<body>
+
+  <div class="main" id="main">
+    
+    <div class="video-player">
+
+      <div class="video-container">
+        <div class="top-overlay" id="top-overlay">
+          <div class="top-container">
+			<!--  File .Gif ខាងឆ្វេង  -->
+            <div class="gif-left">
+				<br/>
+				<br/>
+            <!--  <img src="https://i.gifer.com/PI06.gif">  -->
+            </div>
+			<!--  File .Gif នៅកណ្តាល  -->
+            <div class="long-ads">
+            <!--  <img
+                src="https://static.semrush.com/blog/uploads/media/d0/f2/d0f2bce3463dd91de19f1e25c5dcf5c0/3xcyopENXPUAhbxhdcagnWQJ-gwd4HACWDpGv5qpq7ze3DREgLd9qf2VWKDOP20PM3lGGbiqkpWq6Bo4zO5j58FswvIxSkhjWbGA9Ri5ymcGVcyWIe8tXaK0oxBR19ZQ-zM-Vaw.gif">
+            -->
+			</div>
+			<!--  File .Gif ខាងស្តាំ  -->
+           <div class="gif-right">
+			<br/>
+			<br/>
+            <!--  <img src="https://i.gifer.com/PI06.gif">  -->
+            </div>
+		
+          </div>
+        </div>
+
+        <video id="my-player" class="vjs-fill video-js vjs-big-play-button vjs-show-big-play-button-on-pause vjs-theme-city"></video>
+
+<!--  File .Gif និងអក្សររត់នៅខាងក្រោម Video  -->
+		<!-- <a class="video-button" id="video-play">></a> -->
+		<button class="vjs-big-pause-button no-display" type="button" title="Pause Video" aria-disabled="false" id="pause-button">
+			<span class="vjs-icon-placeholder" aria-hidden="true"></span>
+			<!-- <span class="vjs-control-text" aria-live="polite">Pause Video</span> -->
+		</button>
+        <div class="bottom-overlay" id="bottom-overlay">
+
+        <!-- <img src="https://i.gifer.com/14uB.gif"> 
+
+          <div class="marquee">
+            <div class="marquee__line">
+              <p>Design is not just what it looks like and feels like. Design is how it works.
+                អាចធ្វើការផ្សព្វផ្សាយពាណិជ្ជកម្មនៅទីនេះ</p>
+            </div>
+          </div>  -->
+      </div>
+
+
+    </div>
+
+    </div>
+
+	<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
+    <!-- <script src='js/videojs-playlist.js'></script> -->
+    <script src='https://www.unpkg.com/videojs-playlist@5.1.0/dist/videojs-playlist.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-youtube/3.0.1/Youtube.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-landscape-fullscreen@11.1111.0/dist/videojs-landscape-fullscreen.min.js"></script>
+	<script src='https://cdn.jsdelivr.net/npm/videojs-mobile-ui/dist/videojs-mobile-ui.min.js'></script>
+    <!-- <script src='js/moment.min.js'></script> -->
+    <script src='https://momentjs.com/downloads/moment.min.js'></script>
+    <script>
+
+      function getHour() {
+        var d = new Date();
+        var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+        return parseTime(time);
+      }
+
+      function startTime(i, j) {
+        return parseTime(to2D(i) + ":" + to2D(j) + ":00");
+      }
+
+      function endTime(i, j) {
+        return parseTime(to2D(i) + ":" + (j + 14) + ":59");
+      }
+
+      function to2D(time) {
+        return time.toString().length < 2 ? '0' + time : time;
+      }
+
+      function parseTime(time) {
+        return moment(time, 'hh:mm:ss');
+        // return Date.parse('00/00/2023 ' + time);
+      }
+
+      function srcGDrive(src) {
+        // return src.replace("file/d/", "uc?id=").replace("/view?usp=drive_link", "&export=download");
+        return src.replace("drive.google.com/file/d/", "www.googleapis.com/drive/v3/files/").replace("/view?usp=drive_link", "?alt=media&key=AIzaSyCsWbBzGLElIWrR5uVOHYJMdQj8_DzdFL0");
+      }
+
+      function to1Drive(src) {
+        return src.split('?')[0] + "?download=1";
+      }
+
+      function toGdrive(id) {
+        // return getGlink().concat(atob("L3VjP2lkPQ=="), id, atob("JmV4cG9ydD1kb3dubG9hZA=="));
+        return getGlink().concat(id, atob("P2FsdD1tZWRpYSZrZXk9QUl6YVN5Q3NXYkJ6R0xFbElXclI1dVZPSFlKTWRRajhfRHpkRkww"));
+      }
+
+      function getGlink() {
+        // return atob('aHR0cHM6Ly9kcml2ZS5nb29nbGUuY29t');
+        return atob('aHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vZHJpdmUvdjMvZmlsZXMv');
+      }
+
+      window.onload = function () {
+
+        var index = 0;
+        var hour = getHour();
+		console.log(hour);
+
+        breakLoop:
+        for (var i = 0; i <= 23; i++) {
+          for (var j = 0; j <= 45; j += 15) {
+            if (moment(hour).isBetween(startTime(i, j), endTime(i, j))) {
+              break breakLoop;
+            }
+            index++;
+          }
+        }
+
+      // console.log("Gdrive url = " + toGdrive("15FdBVDc8H9LjU5DfGfsfsXY653d0acao"));
+        // console.log(srcGDrive('https://drive.google.com/file/d/1W68KsOX3P8L5Y7Y_xTft61_8FuVrJJ2k/view?usp=drive_link'));
+        // console.log('https://www.googleapis.com/drive/v3/files/1wpnNV3Naq9WJVUeVCmYFMufocfh3RMsk?alt=media&key=AIzaSyCsWbBzGLElIWrR5uVOHYJMdQj8_DzdFL0');
+        // console.log('https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0RpcmVjdCJ9fQ&e=o0aPdX');
+        // console.log(to1Drive('https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0RpcmVjdCJ9fQ&e=o0aPdX'));
+        console.log(index);
+        // https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=OKb3Ec
+
+        // https://bbukh-my.sharepoint.com/:i:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?download=1
+
+        function get1DLink(token) {
+          return "https://api.onedrive.com/v1.0/shares/u!" + btoa(token).trimEnd('=').replace('/','_').replace('+','-') + "/root/content";
+        }
+        // https://1drv.ms/v/c/1e7c2d82c87b8599/ERT0Ny4yB3JOnVllmnipiTUBr3DFiH8RK6KZ0seXGLDTKw?e=VrunFx
+        console.log(btoa('https://1drv.ms/v/c/1e7c2d82c87b8599/ERT0Ny4yB3JOnVllmnipiTUBr3DFiH8RK6KZ0seXGLDTKw?download=1').trimEnd('=').replace('/','_').replace('+','-'));
+        console.log(to1Drive('https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EVBcetAc3dZJnpk9HOlSeiAB4uofH1g5M3JDu9-5eVLPSQ'));
+
+        console.log(get1DLink(to1Drive('https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0RpcmVjdCJ9fQ&e=o0aPdX')));
+		console.log(srcGDrive('https://drive.google.com/file/d/1TChqVohqRrz8-EqOPZR4_wIlNIP6q8Tf/view?usp=drive_link'));
+
+		// https://drive.google.com/file/d/19XsyPXskm_qdVZja1LwpmF-AftKmeMH7/view?usp=drive_link	
+	
+		// https://drive.google.com/file/d/1Nr390FDv_E14ifJoDLYfes5272AOObLS/view?usp=drive_link
+        var samplePlaylist1 = [{
+			sources: [{
+				src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+				type: 'video/mp4'
+			}]
+			}
+      	];
+
+
+		  var samplePlaylist = [{			
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1GbyDc_ZD0DnbLHns900XXKs75Q7jyBBM/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1LfJLe_uqJsqSrGVapOUf4keEwfLUJNZO/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1rsXKw0V6KfM78V29zN4chCZ-MTQPWsaX/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1t5g9BQM3WduqW8Yo7Bs_jxSoFwOBNksW/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1w_1xJkYkBCwl48WT3HGniqPx6mif0X8b/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1gj7TpGpg95ed3SQE8-QLmOzpvf4Kdi9f/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1RPz4JwuwwWAxLf5Mg4ZqMcDjePgbIthW/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1LR77Z8PTsRG0fy9WzPcamBevxSA8zOau/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1hyta4p_-a93gWjqrBB7fItN-rwNOMrkg/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1T1JATksRHFakJVphoy4ag-uECgzxN93N/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1_3o28TWIXXPV1D72HEmjkRSp869gKmTR/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1VxxpRkLU4pAQ-ILiNUWmT0AjWtuyuN3j/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1zVwGSzrjZXwfbwrorQ_w8T8ad8tn5Qhz/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1X855hGQ-T_F0d_eGtOk0F8gM0k_UbpQX/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1rLn0j9PYNmIcZCXWXI5hgIwwdvEfVsqL/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1hqJuVie_rG_Cyx9dVGjtPCnKfIqn3RTB/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1rrRyWLQthyy05Di5wGihdl801bK_Bsvd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1DUDzsvnCz9e0vifMMLhx_Hg6_AquJZMu/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1T96QMum6n7tWMzbuEMa8jSIkMFQTRqbZ/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1DFBnMrOzcfGLrbRaptDwBwnjfGSOK7l6/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1e_qaGFpotu7D00UTOHFLV3WpKk6RINk3/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1HMegrkHOE9ZVNwxDTFOYE0bU4v1w-tAu/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1UKjSrkivBQwc3FN6_U75QjF3-UPJal-Q/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1r5oqAMbcAc1WgmTnmHozeDHQgABk_GXd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/19cuxhXCo9PHtKiffYIWPikMHzAjmK9QN/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1FRmmajB83qeyH8N2mtfbGHjbu3R8QSAX/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1WELD4E0908K6uvYzA_toYHjxkwRnE7qK/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1OWgfDIVWh9Dv_j88tuOXgtuSD-2EKDZP/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Z_8iGPkyGwm0NTDuuKv3ytM02LzhL7Wc/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Za9ZsJWrtCGti1nPVCK-WsctCoPqCvBI/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1I4Cnt6zEv60StwTsS3T1XkMbrF_IYFYd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/12LsjjZ-osBNcNi_mznNZftbV1j3GPqMz/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Y4O0ZIAPjZpbXxBMHrcm04Gn9Nx_8Enf/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1gBRX_cpd1skSL7fTM7xZiM6RflS8zzXe/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1LuKfGmwhRm37yXbLKeTz7YHcCJsU4-RK/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1pPCumEvfjUmTgDGHvyTWDaTJMUfQ-IXv/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1qDP-593y2IeJQzfBO0Urm7KAeJ6JACMu/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1dStGI2IksxaMpsx0eNmX4qKSjKErW2Wl/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1D9p2MX4znDXkslP2ZhNXxP6boIxOeHV6/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1RjgPga3_5LkDiQkr_otGMWk61zmZL-Fh/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/129DSyRgqPWTsUoflTsLtuBdhUN85TSPy/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Kl2-fRTASXS5v8QZlXa41FnMEqYTz5oq/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1_UgEE20p1wRIl6hBM-gex308UZydqIBQ/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1BtNmlOP-92zScFnzJMl59Q8UZqW9Insd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/16IrTfpfpLVLD0IPGP918OdbF0Cy4luYH/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Tv2P7ybz4YW4Yy9o1RQDAudjGGcIak_M/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1IXm4BK7qmdLGfKpbA3QRglJNY8lsdX0M/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1NvGc2onTJ646MM_wy1ll6vTk2dKZAYy8/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1GbyDc_ZD0DnbLHns900XXKs75Q7jyBBM/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1LfJLe_uqJsqSrGVapOUf4keEwfLUJNZO/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1rsXKw0V6KfM78V29zN4chCZ-MTQPWsaX/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1t5g9BQM3WduqW8Yo7Bs_jxSoFwOBNksW/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1w_1xJkYkBCwl48WT3HGniqPx6mif0X8b/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1gj7TpGpg95ed3SQE8-QLmOzpvf4Kdi9f/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1RPz4JwuwwWAxLf5Mg4ZqMcDjePgbIthW/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1LR77Z8PTsRG0fy9WzPcamBevxSA8zOau/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1hyta4p_-a93gWjqrBB7fItN-rwNOMrkg/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1T1JATksRHFakJVphoy4ag-uECgzxN93N/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1_3o28TWIXXPV1D72HEmjkRSp869gKmTR/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1VxxpRkLU4pAQ-ILiNUWmT0AjWtuyuN3j/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1zVwGSzrjZXwfbwrorQ_w8T8ad8tn5Qhz/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1X855hGQ-T_F0d_eGtOk0F8gM0k_UbpQX/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1rLn0j9PYNmIcZCXWXI5hgIwwdvEfVsqL/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1hqJuVie_rG_Cyx9dVGjtPCnKfIqn3RTB/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1rrRyWLQthyy05Di5wGihdl801bK_Bsvd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1DUDzsvnCz9e0vifMMLhx_Hg6_AquJZMu/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1T96QMum6n7tWMzbuEMa8jSIkMFQTRqbZ/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1DFBnMrOzcfGLrbRaptDwBwnjfGSOK7l6/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1e_qaGFpotu7D00UTOHFLV3WpKk6RINk3/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1HMegrkHOE9ZVNwxDTFOYE0bU4v1w-tAu/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1UKjSrkivBQwc3FN6_U75QjF3-UPJal-Q/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1r5oqAMbcAc1WgmTnmHozeDHQgABk_GXd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/19cuxhXCo9PHtKiffYIWPikMHzAjmK9QN/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1FRmmajB83qeyH8N2mtfbGHjbu3R8QSAX/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1WELD4E0908K6uvYzA_toYHjxkwRnE7qK/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1OWgfDIVWh9Dv_j88tuOXgtuSD-2EKDZP/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Z_8iGPkyGwm0NTDuuKv3ytM02LzhL7Wc/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Za9ZsJWrtCGti1nPVCK-WsctCoPqCvBI/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1I4Cnt6zEv60StwTsS3T1XkMbrF_IYFYd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/12LsjjZ-osBNcNi_mznNZftbV1j3GPqMz/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Y4O0ZIAPjZpbXxBMHrcm04Gn9Nx_8Enf/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1gBRX_cpd1skSL7fTM7xZiM6RflS8zzXe/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1LuKfGmwhRm37yXbLKeTz7YHcCJsU4-RK/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1pPCumEvfjUmTgDGHvyTWDaTJMUfQ-IXv/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1qDP-593y2IeJQzfBO0Urm7KAeJ6JACMu/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1dStGI2IksxaMpsx0eNmX4qKSjKErW2Wl/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1D9p2MX4znDXkslP2ZhNXxP6boIxOeHV6/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1RjgPga3_5LkDiQkr_otGMWk61zmZL-Fh/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/129DSyRgqPWTsUoflTsLtuBdhUN85TSPy/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Kl2-fRTASXS5v8QZlXa41FnMEqYTz5oq/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1_UgEE20p1wRIl6hBM-gex308UZydqIBQ/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1BtNmlOP-92zScFnzJMl59Q8UZqW9Insd/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/16IrTfpfpLVLD0IPGP918OdbF0Cy4luYH/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1Tv2P7ybz4YW4Yy9o1RQDAudjGGcIak_M/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1IXm4BK7qmdLGfKpbA3QRglJNY8lsdX0M/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}, {	
+	sources: [{		
+		src: srcGDrive('https://drive.google.com/file/d/1NvGc2onTJ646MM_wy1ll6vTk2dKZAYy8/view?usp=drive_link'),	
+		type: 'video/mp4'	
+		}]	
+		}];	
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //to use one drive use the following function
+        //srcOne('url');
+        //example below
+        // sources: [{
+        //     src: to1Drive('https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0RpcmVjdCJ9fQ&e=o0aPdX'),
+        //     type: 'video/mp4'
+        //   }]
+
+
+        var container = document.getElementById("my-player");
+        videojs(container, {
+          controls: true,
+          autoplay: true,
+          techOrder: ["html5", "youtube"]
+        //   sources: [{
+        //     type: 'video/youtube',
+        //     src: 'https://www.youtube.com/watch?v=1F5GTHOVmM8'
+        //     // src: 'https://bbukh-my.sharepoint.com/:v:/g/personal/mam_piseth_pp_bbu_edu_kh/EUa37PwvAVFMkqdXrrG4gpIBORiV5vZjNWxfbbhVj4mBxg?download=1'
+        //     // src:''
+        //   }]
+        }, function () {
+        });
+
+        var video = videojs('my-player');
+        video.landscapeFullscreen({
+			fullscreen: {
+				enterOnRotate: true,
+				exitOnRotate: false, 
+				alwaysInLandscapeMode: true,
+				iOS: true
+			}
+        });
+        /*video.mobileUi({
+			fullscreen: {
+				enterOnRotate: true,
+				exitOnRotate: true,
+				lockOnRotate: true,
+				lockToLandscapeOnEnter: true,
+				disabled: false
+			},
+			touchControls: {
+				seekSeconds: 10,
+				tapTimeout: 300,
+				disableOnEnd: false,
+				disabled: true,
+			}
+		});*/
+        
+        // video.fluid(true);
+        // video.fill(true);
+        // player.responsive(true);
+        video.playlist(samplePlaylist);
+        video.playlist.autoadvance(0);
+        video.playlist.currentItem(index);
+        video.controlBar.progressControl.disable();
+		
+		$('#pause-button').appendTo($('#my-player'));
+		var player = document.getElementById("my-player");
+		console.log(player);
+		var pause_button = player.getElementsByClassName("vjs-big-pause-button");
+		var p_button = pause_button[0];
+		video.handleTechTap_ = function () { 
+			var delayInMilliseconds = 2500; //2.5 second
+			// if(this.userActive_) {
+			// 	this.controls() && (this.paused() ? this.play() : this.pause()); 
+				
+			// }
+			if(!player.classList.contains("vjs-paused")) {
+				p_button.classList.remove("no-display");
+				setTimeout(function() {
+					p_button.classList.add("no-display");
+				}, delayInMilliseconds);
+			}
+			this.userActive(!this.userActive());
+		}
+		
+		// video.on('touchstart', function (e) {
+		// 	if (e.target.nodeName === 'VIDEO') {
+		// 		var player = document.getElementById("my-player");
+		// 		var delayInMilliseconds = 2500; //1 second
+		// 		console.log("jol");
+					
+				
+		// 		if(video.play()) {
+		// 			console.log("jol");
+		// 			p_button.classList.remove("no-display");
+		// 			setTimeout(function() {
+		// 				p_button.classList.add("no-display");
+		// 			}, delayInMilliseconds);
+		// 		}
+				
+		// 		// if (video.paused()) {
+		// 		// 	// this.play();
+		// 		// 	var spanElement = bigplay[0].getElementsByClassName("vjs-icon-placeholder");
+		// 		// 	spanElement[0].classList.replace("vjs-icon-placeholder", "vjs-icon-placeholder-on-pause");
+		// 		// 	console.log(bigplay[0]);
+		// 		// } else {
+		// 		// 	// this.pause();
+		// 		// 	var spanElement = bigplay[0].getElementsByClassName("vjs-icon-placeholder-on-pause");
+		// 		// 	spanElement[0].classList.replace("vjs-icon-placeholder-on-pause", "vjs-icon-placeholder");
+		// 		// 	console.log(bigplay[0]);
+		// 		// }
+		// 	}
+		// });
+		// console.log(p_button);
+		p_button.addEventListener('touchstart', function() {
+			if (video.play()) {
+				setTimeout(function() {
+					p_button.classList.add("no-display");
+					video.pause();
+				}, 500);
+			} 
+		});
+
+        video.on('play', function () {
+          // this.bigPlayButton.hide();
+          if (video.requestFullscreen) {
+            video.requestFullscreen();
+          } else if (video.mozRequestFullScreen) {
+            video.mozRequestFullScreen();
+          } else if (video.webkitRequestFullscreen) {
+            video.webkitRequestFullscreen();
+          } else if (video.msRequestFullscreen) {
+            video.msRequestFullscreen();
+          } else {
+            alert("Full screen not supported");
+            return;
+          }
+        });
+
+        $('#top-overlay').appendTo($('#my-player'));
+        $('#bottom-overlay').appendTo($('#my-player'));
+      }
+    </script>
+
+</body>
+
+</html>
