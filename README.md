@@ -1,1 +1,0 @@
-# vivita693.github.io
